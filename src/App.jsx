@@ -1,35 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+function RoomPage() {
+    return (
+        <div className="room-page-container">
+            <div className="header">
+              <h2>Echo room</h2>
+            </div>
+            <div className="content">
+              <p>Enter a room or create one</p>
+              <p>to listen to your favorite music with your friends</p>
+              <div className="input-group">
+                <input type="text" placeholder="Room code input" />
+              </div>
+              <div className="separator">Or</div>
+              <button className="create-room-button">Create room</button>
+            </div>
+        </div>
+    );
 }
 
-export default App
+export default RoomPage;

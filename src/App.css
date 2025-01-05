@@ -1,42 +1,83 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+body {
+  font-family: sans-serif;
+  background-color: #f2f2f2; /* Light grey page background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.room-page-container {
+    background-color: #fff; /*Set white background to the container*/
+    padding: 20px; /* Reduced Padding */
+    border-radius: 5px; /* Added border-radius for rounded corners*/
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: none; /*Removed Shadow*/
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Reduced Margin */
+    padding: 0 10px;
+    border-bottom: 1px solid #e0e0e0; /* Added Border */
+}
+
+.header h2 {
+    font-size: 1.2em; /* Reduced Font Size*/
+    margin: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+  padding: 0 10px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.content p:first-child {
+    font-size: 1em; /* Reduced Font Size*/
+    margin-bottom: 5px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.content p:nth-child(2) {
+  color: #777;
+  margin-bottom: 20px;/* Reduced Margin */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.input-group {
+  width: 100%;
+  margin-bottom: 10px; /* Reduced Margin */
 }
 
-.card {
-  padding: 2em;
+.input-group input {
+    width: calc(100% - 12px);
+  padding: 8px; /* Reduced Padding */
+    border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+    font-size: 0.9em; /* Reduced Font Size*/
 }
 
-.read-the-docs {
-  color: #888;
+.separator {
+  margin: 10px 0;
+   color: #777;
+   font-size: 0.8em; /* Reduced Font Size*/
+}
+
+
+.create-room-button {
+    width: 100%;
+  padding: 10px; /* Reduced Padding */
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9em;/* Reduced Font Size*/
 }
