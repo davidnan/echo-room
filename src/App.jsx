@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import {logout} from './auth/firebaseLogin.js';
 
 function RoomPage() {
     return (
@@ -14,7 +15,7 @@ function RoomPage() {
                 <input type="text" placeholder="Room code input" />
               </div>
               <div className="separator">Or</div>
-              <button className="create-room-button">Create room</button>
+              <button className="create-room-button" onClick={logout}>Create room</button>
             </div>
         </div>
     );

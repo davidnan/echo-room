@@ -100,6 +100,15 @@ button.continue-btn {
     margin-bottom: 15px;
 }
 
+button.continue-btn:hover {
+    background-color: #1c1c1c;
+}
+
+button.continue-btn:disabled {
+    background-color: #423d3d;
+    cursor: default;
+}
+
 
 .separator {
     display: flex;
