@@ -54,10 +54,7 @@ function Login() {
 
     return (
         <div className="login-container">
-            <div className="header">
-                <h2>Echo room</h2>
-                <p>Welcome back</p>
-            </div>
+            
             <div className="tabs">
                 <button className={!isSignUp ? 'active' : ''} onClick={() => setIsSignUp(false)}>Sign in</button>
                 <button className={isSignUp ? 'active' : ''} onClick={() => setIsSignUp(true)}>Sign up</button>

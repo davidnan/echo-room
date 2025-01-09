@@ -1,19 +1,50 @@
 import React from "react";
-import { Routes, Route } from 'react-router-dom';
-import Login from './auth/Login.jsx';
-import App from './App.jsx';
-import PrivateRoute from './auth/PrivateRoute.jsx';
+import { Routes, Route } from "react-router-dom";
+import Login from "./auth/Login.jsx";
+import App from "./App.jsx";
+import PrivateRoute from "./auth/PrivateRoute.jsx";
+import Header from "./Header";
+import "./Router.css";
+import Room from "./Room.jsx";
+
+const Layout = ({ children }) => {
+  return (
+    <div className="app-container">
+      <Header />
+      <main className="main-content">{children}</main>
+    </div>
+  );
+};
 
 const MainRouter = () => {
-    return (
-        <Routes>
-            <Route path="/" element={<PrivateRoute >
-                <App/>
-            </PrivateRoute>}>
-            </Route>
-            <Route path="/login" element={<Login />}/>
-        </Routes>
-    );
+  return (
+    <Layout>
+      <Routes>
+        {/* Public Route for Login */}
+        <Route path="/login" element={<Login />} />
+        
+        {/* Private Route for App */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <App />
+            </PrivateRoute>
+          }
+        />
+        
+        {/* Private Route for Room */}
+        <Route
+          path="/room"
+          element={
+            <PrivateRoute>
+              <Room />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </Layout>
+  );
 };
 
 export default MainRouter;

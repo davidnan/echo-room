@@ -1,0 +1,114 @@
+.room-page {
+    display: flex;
+    flex-direction: column;
+    
+    background-color: #f9f9f9;
+    font-family: sans-serif;
+    padding: 100px;
+    width: 100%;
+    min-width: 1200px;
+     
+  }
+  
+  .room-content {
+    display: flex;
+    flex-direction: column;
+    
+    width: 100%;
+  }
+  
+  
+  .room-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    padding: 0 20px;
+  }
+  
+  .room-circle {
+    width: 20px;
+    height: 20px;
+    background-color: #333;
+    border-radius: 50%;
+  }
+  
+  .room-text p {
+    margin: 0;
+    color: #333;
+  }
+  
+  .user-list {
+    list-style: none;
+    padding: 0;
+
+}
+.user-item{
+    display: flex;
+    align-items: center;
+    margin-bottom:10px;
+}
+
+.user-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #333;
+    margin-right: 10px;
+}
+.user-item p{
+    flex:1;
+}
+  
+  .queue-section {
+    text-align: center;
+    padding: 20px 0;
+    color: #777;
+  }
+  
+  .queue-section h2 {
+    margin-bottom: 10px;
+  }
+  
+  .room-footer {
+    background-color: #000;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .add-song-button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    color: white;
+    cursor: pointer;
+    
+  }
+  .add-song-button:hover{
+    background-color: #423d3d;
+  }
+  
+  .room-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.remove{
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+

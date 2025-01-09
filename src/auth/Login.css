@@ -14,21 +14,7 @@ body {
     width: 500px;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
-.header {
-    text-align: left;
-    margin-bottom: 15px;
-}
 
-.header h2 {
-    margin-bottom: 5px;
-    font-size: 1.5em;
-    font-weight: 500;
-}
-.header .welcome-back-text {
-    color: #777;
-   font-size: 0.9em;
-   margin-top: 5px; /* Add space between title and text */
-}
 
 .tabs {
     display: flex;
