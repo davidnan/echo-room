@@ -1,10 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Header.css';
 import {logout} from './auth/firebaseLogin.js';
+import { useNavigate } from 'react-router-dom';
+
 
 const Header = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const popupRef = useRef(null);
+  const navigate = useNavigate();
+
+  const goToProfile = () => {
+   
+    navigate("/profile");
+  };
+
+  const HandleClick = () => {
+    
+    goToProfile();
+    
+  }
 
   const togglePopup = () => {
     setIsPopupVisible((prevState) => !prevState);
@@ -51,7 +65,7 @@ const Header = () => {
             </button>
           </div>
           <ul className="popup-options">
-            <li>View Profile</li>
+            <li onClick={HandleClick}>View Profile</li>
             <li>Change Password</li>
             <li onClick={logout}>Logout</li>
           </ul>

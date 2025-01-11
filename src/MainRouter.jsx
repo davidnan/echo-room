@@ -6,6 +6,7 @@ import PrivateRoute from "./auth/PrivateRoute.jsx";
 import Header from "./Header";
 import "./Router.css";
 import Room from "./Room.jsx";
+import Profile from "./Profile.jsx"
 
 const Layout = ({ children }) => {
   return (
@@ -39,6 +40,14 @@ const MainRouter = () => {
           element={
             <PrivateRoute>
               <Room />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
             </PrivateRoute>
           }
         />
