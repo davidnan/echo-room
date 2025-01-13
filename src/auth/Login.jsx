@@ -12,6 +12,11 @@ function Login() {
     const [error, setError] = useState("");
 
     let navigate = useNavigate();
+    const Logo = () => (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12h4l3-9 4 18 3-9h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      );
 
     const isFormValid = isSignUp
         ? username && email && password
@@ -53,8 +58,12 @@ function Login() {
     };
 
     return (
+     <div className='container1'>
         <div className="login-container">
-            
+        <div className="logo">
+            <Logo />
+            <span className="logo-text">Echo room</span>
+        </div>
             <div className="tabs">
                 <button className={!isSignUp ? 'active' : ''} onClick={() => setIsSignUp(false)}>Sign in</button>
                 <button className={isSignUp ? 'active' : ''} onClick={() => setIsSignUp(true)}>Sign up</button>
@@ -105,6 +114,7 @@ function Login() {
                 <button>  </button>
             </div>
         </div>
+     </div>
     );
 }
 

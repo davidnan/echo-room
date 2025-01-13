@@ -1,53 +1,52 @@
 .header {
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(243, 244, 246, 0.8);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgb(229, 231, 235);
-    z-index: 50;
-  }
   
-  .header-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0.75rem 1rem;
-  }
-  
-  .header-title {
-    font-size: 1.125rem;
-    font-weight: 500;
-  }
-  
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .profile-button {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 9999px;
-    background-color: rgb(31, 41, 55);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .profile-button:hover {
-    background-color: rgb(55, 65, 81);
-  }
-  
-  .profile-button:focus {
-    outline: 2px solid rgb(59, 130, 246);
-    outline-offset: 2px;
-  }
+  background-color: rgba(33, 37, 41, 0.95);
+  margin:0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+ 
+
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.logo svg {
+  color: #5AA9E6;
+}
+
+.logo-text {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(52, 58, 64, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+}
+
  
   
   /* Popup */
@@ -55,7 +54,9 @@
     position: absolute;
     top: 3rem;
     right: 0;
-    background: white;
+    background: rgb(81,88,101);
+    background: linear-gradient(45deg, rgba(81,88,101,1) 0%, rgba(62,62,78,1) 35%, rgba(28,30,31,1) 100%);
+    color: #5AA9E6;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     width: 200px;
