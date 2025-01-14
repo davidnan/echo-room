@@ -1,12 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import MainRouter from './MainRouter'; 
-
+import MainRouter from './MainRouter.jsx'; 
 import { BrowserRouter } from 'react-router-dom';
 import {AuthProvider} from "./auth/AuthContext.jsx";
-
-
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

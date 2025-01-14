@@ -1,19 +1,76 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Room.css';
+import {useCallback, useEffect, useState} from 'react';
+import useWebSocket, {ReadyState} from "react-use-websocket";
+import {useNavigate, useParams} from "react-router-dom";
+import {useAuth} from "./auth/AuthContext.jsx";
+import {getAuth} from "firebase/auth";
+import config from "./config/serverConfig.js"
+import YouTubeAudioPlayer from "./YoutubeVideoPlayer.jsx";
+
 
 const RoomPage = () => {
+  const [socketUrl, setSocketUrl] = useState(`ws://${config.serverIp}:${config.port}/`);
+    const [messageHistory, setMessageHistory] = useState([]);
+    const [users, setUsers] = useState(["{}"]);
+    const [songs, setSongs] = useState([""]);
+    const [videoId, setVideoId] = useState('GBIIQ0kP15E');  // Initial video ID
+
+
+    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (lastMessage === null) {
+            return;
+        }
+        const messageJson = JSON.parse(lastMessage.data);
+        switch (messageJson.type) {
+            case "next_song":
+                setVideoId(messageJson.songUid);
+                break;
+            case "songs":
+                setSongs(messageJson.songs);
+                break;
+            case "users":
+                setUsers(messageJson.users);
+                break;
+
+        }
+
+    }, [lastMessage]);
+
+    useEffect( () => {
+        if (readyState === ReadyState.OPEN) {
+            getAuth().currentUser.getIdToken().then( accessToken => {
+                sendMessage(JSON.stringify({type: "join", code: params.roomCode, accessToken: accessToken }));
+            })
+        }
+    }, [readyState]);
+
+    useEffect(() => {
+        if (readyState === ReadyState.CLOSED) {
+            navigate('/')
+        }
+    })
+
+
+    const handleClickSendMessage = useCallback(() => {
+        getAuth().currentUser.getIdToken().then( accessToken => {
+            sendMessage(JSON.stringify({type: "add_song", url: "https://www.youtube.com/watch?v=utpXlVnUEUE", accessToken: accessToken }));
+        })
+    }, []);
+
+    const onPlayerEnd = () => {
+        getAuth().currentUser.getIdToken().then( accessToken => {
+            sendMessage(JSON.stringify({type: "get_next_song", accessToken: accessToken }));
+        })
+    }
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [songLink, setSongLink] = useState('');
 
-  const users = [
-    { username: "John Doe", email: "john@example.com", isOwner: true },
-    { username: "Jane Smith", email: "jane@example.com", isOwner: false },
-  ];
-
-  const songs = [
-    { title: "Never Gonna Give You Up", uid: "dQw4w9WgXcQ" },
-    { title: "Bohemian Rhapsody", uid: "fJ9rUzIMcZQ" },
-  ];
+ 
 
   const handleAddSong = () => {
     setIsModalOpen(true);
@@ -67,6 +124,7 @@ const RoomPage = () => {
                   <div className="song-list">
                     {songs.map((song, index) => (
                       <div key={index} className="song-item">
+                         <YouTubeAudioPlayer videoId={videoId} onPlayerEnd={onPlayerEnd}/>
                         <img
                           src={`https://img.youtube.com/vi/${song.uid}/mqdefault.jpg`}
                           alt={song.title}
@@ -89,6 +147,12 @@ const RoomPage = () => {
           </button>
         </div>
       </div>
+      <button
+                    onClick={handleClickSendMessage}
+                    disabled={readyState !== ReadyState.OPEN}
+                >
+                    Click Me to send 'this url: https://www.youtube.com/watch?v=utpXlVnUEUE'
+                </button>
 
       {/* Modal */}
       {isModalOpen && (

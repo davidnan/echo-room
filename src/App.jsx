@@ -1,59 +1,49 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-import {logout} from './auth/firebaseLogin.js';
+import React from 'react';
 import './App.css';
-import { useNavigate } from 'react-router-dom';
 
-const Logo = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 12h4l3-9 4 18 3-9h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+import {getAuth} from "firebase/auth";
+
+import config from "./config/serverConfig.js"
+
+
 
 function RoomPage() {
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const popupRef = useRef(null);
- 
-
-  const goToProfile = () => {
-   
-    navigate("/profile");
-  };
-
-  const HandleClick = () => {
-    
-    goToProfile();
-    
-  }
-
-  const togglePopup = () => {
-    setIsPopupVisible((prevState) => !prevState);
-  };
-
-  const closePopup = () => {
-    setIsPopupVisible(false);
-  };
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        closePopup();
-      }
-    };
-
-    if (isPopupVisible) {
-      document.addEventListener("mousedown", handleOutsideClick);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [isPopupVisible]);
   const navigate = useNavigate();
-
-  const goToRoom = () => {
-    navigate("/room");
-  };
-
+  const handleEnteredCode = async (code) => {
+    if (code.length === 11) {
+        try{
+            console.log(code)
+            const accessToken = await getAuth().currentUser.getIdToken()
+            const response = await axios.post(`http://${config.serverIp}:${config.port}/join_room`, {
+                code: code,
+                accessToken: accessToken
+            }, {
+                headers: { 'Content-Type': 'application/json' },
+            });
+            console.log(response)
+            if (response.status === 200) {
+                navigate(`/room/${code}`)
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+  }
+  
+  const handleCreateRoom = async () => {
+    const accessToken = await getAuth().currentUser.getIdToken()
+    const response = await axios.post(`http://${config.serverIp}:${config.port}/create_room`, {
+         accessToken: accessToken
+    }, {
+        headers: { 'Content-Type': 'application/json' },
+    });
+    console.log(response)
+    navigate(`/room/${response.data}`)
+  }
+  
   return (
     <div className="container">
       
@@ -66,29 +56,16 @@ function RoomPage() {
         </div>
         
         <div className="input-group">
-          <input type="text" placeholder="Room code" />
+          <input type="text" placeholder="Room code" onChange={(e) => handleEnteredCode(e.target.value)}/>
         </div>
         
         <div className="separator">Or</div>
         
-        <button className="create-room-button" onClick={goToRoom}>
+        <button className="create-room-button" onClick={handleCreateRoom}>
           Create room
         </button>
       </div>
-      {isPopupVisible && (
-        <div className="profile-popup">
-          <div className="popup-header">
-            <span>Profile Options</span>
-            <button className="close-button" onClick={closePopup}>
-              &times;
-            </button>
-          </div>
-          <ul className="popup-options">
-            <li onClick={HandleClick}>View Profile</li>
-            <li>Change Password</li>
-            <li onClick={logout}>Logout</li>
-          </ul>
-        </div>)}   
+       
     </div>
 
   );
