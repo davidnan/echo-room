@@ -14,17 +14,32 @@ const RoomPage = () => {
     const [messageHistory, setMessageHistory] = useState([]);
     const [users, setUsers] = useState(["{}"]);
     const [songs, setSongs] = useState([""]);
+    const [roomName, setRoomName] = useState("");
     const [videoId, setVideoId] = useState('GBIIQ0kP15E');  // Initial video ID
 
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
     const navigate = useNavigate();
+    const auth = useAuth();
+
+    // Determine room owner (assume first user in users array is owner, adjust as needed)
+    const roomOwnerEmail = users && users.length > 0 && users[0].email ? users[0].email : null;
+    const currentUserEmail = auth.user?.email;
+    const isRoomOwner = roomOwnerEmail === currentUserEmail;
+
+    // Handler to update room name
+    const handleRoomNameChange = (newRoomName) => {
+        getAuth().currentUser.getIdToken().then(accessToken => {
+            sendMessage(JSON.stringify({type: "update_room_name", roomName: newRoomName, accessToken: accessToken }));
+        });
+    };
 
     useEffect(() => {
         if (lastMessage === null) {
             return;
         }
         const messageJson = JSON.parse(lastMessage.data);
+        console.log("Received message: ", JSON.stringify(messageJson));
         switch (messageJson.type) {
             case "next_song":
                 setVideoId(messageJson.songUid);
@@ -35,13 +50,18 @@ const RoomPage = () => {
             case "users":
                 setUsers(messageJson.users);
                 break;
+            case "roomName":
+                setRoomName(messageJson.roomName);
+                break;
 
         }
 
     }, [lastMessage]);
 
     useEffect( () => {
+        console.log(readyState)
         if (readyState === ReadyState.OPEN) {
+            console.log("ready");
             getAuth().currentUser.getIdToken().then( accessToken => {
                 sendMessage(JSON.stringify({type: "join", code: params.roomCode, accessToken: accessToken }));
             })
@@ -69,23 +89,30 @@ const RoomPage = () => {
 
     return (
         <>
-            <Header />
+            <Header
+                isRoom={true}
+                roomName={roomName}
+                isRoomOwner={isRoomOwner}
+                onRoomNameChange={handleRoomNameChange}
+                roomCode={params.roomCode}
+            />
             <div>
                 <h2>users: {JSON.stringify(users)}</h2>
                 <h2>songs: {JSON.stringify(songs)}</h2>
             </div>
-            <div>
-                <button
-                    onClick={handleClickSendMessage}
-                    disabled={readyState !== ReadyState.OPEN}
-                >
-                    Click Me to send 'this url: https://www.youtube.com/watch?v=utpXlVnUEUE'
-                </button>
-                <ul>
-                    <YouTubeAudioPlayer videoId={videoId} onPlayerEnd={onPlayerEnd}/>
-                </ul>
-            </div>
-        </>
+            {isRoomOwner && (
+                <div>
+                    <button
+                        onClick={handleClickSendMessage}
+                        disabled={readyState !== ReadyState.OPEN}
+                    >
+                        Click Me to send 'this url: https://www.youtube.com/watch?v=utpXlVnUEUE'
+                    </button>
+                    <ul>
+                        <YouTubeAudioPlayer videoId={videoId} onPlayerEnd={onPlayerEnd}/>
+                    </ul>
+                </div>
+            )}        </>
     )
 };
 

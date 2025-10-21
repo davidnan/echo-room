@@ -4,9 +4,11 @@ import './Loading.css'; // Import styles
 
 const Loading = () => {
     return (
-        <div className="loading-container">
-            <div className="spinner"></div>
-            <p>Loading...</p>
+        <div className="loading-bg">
+            <div className="loading-card">
+                <div className="spinner"></div>
+                <p className="loading-text">Loading, please wait...</p>
+            </div>
         </div>
     );
 };

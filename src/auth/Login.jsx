@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './Login.css';
-import { login, createAccount } from "./firebaseLogin.js";
+import { signInWithGooglePopup } from "./firebaseLogin.js";
 import { useNavigate } from "react-router-dom";
-import {handleFirebaseErrorCodes} from "./firebaseErrorCodes.js";
+import { GoogleButton } from 'react-google-button';
+import Logo from '../util/Logo.jsx';
 
 function Login() {
     const [isSignUp, setIsSignUp] = useState(false);
@@ -13,99 +14,21 @@ function Login() {
 
     let navigate = useNavigate();
 
-    const isFormValid = isSignUp
-        ? username && email && password
-        : email && password;
-
-    const handleContinue = async (e) => {
-        if (isSignUp) {
-            await handleSignUp(e);
-        } else {
-            await handleLogin(e)
-        }
-    };
-
-
-    const handleSignUp = async (e) => {
-        e.preventDefault();
-        try{
-            const user = await createAccount(username, email, password);
-            navigate("/");
-            console.log("Logged in as:", user.displayName);
-        }
-        catch(err){
-            console.log(err);
-            setError(err);
-        }
-    }
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            const user = await login(email, password);
-            setError(null);
-            navigate("/");
-            console.log("Logged in as:", user.displayName);
-        } catch (err) {
-            console.log(err.code);
-            setError(err);
-        }
-    };
-
     return (
-        <div className="login-container">
-            <div className="header">
-                <h2>Echo room</h2>
-                <p>Welcome back</p>
-            </div>
-            <div className="tabs">
-                <button className={!isSignUp ? 'active' : ''} onClick={() => setIsSignUp(false)}>Sign in</button>
-                <button className={isSignUp ? 'active' : ''} onClick={() => setIsSignUp(true)}>Sign up</button>
-            </div>
-            <div className="form-container">
-                <div className="input-group">
-                    {isSignUp && (
-                        <>
-                            <label htmlFor="username">Username input</label>
-                            <input
-                                type="text"
-                                id="username"
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder="Enter your username" />
-                        </>
-                    )}
+        <div className="container1">
+            <div className="login-container">
+                <div className="logo">
+                    <Logo />
+                    <h2 className="logo-text">EchoRoom</h2>
                 </div>
-                <div className="input-group">
-                    <label htmlFor="email">Email input</label>
-                    <input
-                        type="email"
-                        id="email"
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
-                    />
+                <div className="welcome-text">Ready to set the vibe?</div>
+                <div className="subtitle-text">Sign in to add music to a room.</div>
+                <div className="google-btn-wrapper">
+                    <GoogleButton onClick={() => {
+                        const user = signInWithGooglePopup();
+                        console.log(user);
+                    }} />
                 </div>
-                <div className="input-group">
-                    <label htmlFor="password">Password input</label>
-                    <input
-                        type="password"
-                        id="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter your password"
-                    />
-                </div>
-                {!isSignUp && (
-                    <a className="forgot-password" href="#">
-                        Forgot password?
-                    </a>
-                )}
-            </div>
-            <button className="continue-btn" disabled={!isFormValid} onClick={handleContinue}>Continue</button>
-            {error && <p style={{ color: "red" }}>{handleFirebaseErrorCodes(error.code)}</p>}
-            <div className="separator">Or continue with</div>
-            <div className="social-buttons">
-                <button>  </button>
-                <button>  </button>
-                <button>  </button>
             </div>
         </div>
     );

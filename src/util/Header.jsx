@@ -2,10 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Header.css';
 import {logout} from '../auth/firebaseLogin.js';
 import { useNavigate } from 'react-router-dom';
+import {MinidenticonImg} from "../profile/MinidenticonImg.jsx";
+import {useAuth} from "../auth/AuthContext.jsx";
+import Logo from "./Logo.jsx";
 
 
-const Header = () => {
+const Header = ({roomName, isRoom, isRoomOwner, onRoomNameChange, roomCode}) => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [editableRoomName, setEditableRoomName] = useState(roomName);
+    const [isEditing, setIsEditing] = useState(false);
+    const [copyFeedback, setCopyFeedback] = useState('');
     const popupRef = useRef(null);
     const navigate = useNavigate();
 
@@ -43,18 +49,81 @@ const Header = () => {
         };
     }, [isPopupVisible]);
 
+    useEffect(() => {
+        setEditableRoomName(roomName);
+    }, [roomName]);
+
+    const handleRoomNameChange = (e) => {
+        setEditableRoomName(e.target.value);
+    };
+    const handleRoomNameBlur = () => {
+        setIsEditing(false);
+        if (editableRoomName !== roomName && onRoomNameChange) {
+            onRoomNameChange(editableRoomName);
+        }
+    };
+    const handleRoomNameKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            setIsEditing(false);
+            if (editableRoomName !== roomName && onRoomNameChange) {
+                onRoomNameChange(editableRoomName);
+            }
+        }
+    };
+
+    const handleCopyRoomCode = () => {
+        if (roomCode) {
+            navigator.clipboard.writeText(roomCode).then(() => {
+                setCopyFeedback('Copied!');
+                setTimeout(() => setCopyFeedback(''), 1200);
+            });
+        }
+    };
+
     return (
         <header className="header">
             <div className="header-content">
-                <h1 className="header-title">Echo room</h1>
-
+                <div className="header-left">
+                        <Logo />
+                        <span className="logo-text">EchoRoom</span>
+                    <div className="room-name-container">
+                        {isRoomOwner ? (
+                            isEditing ? (
+                                <input
+                                    className="room-name-input"
+                                    type="text"
+                                    value={editableRoomName}
+                                    onChange={handleRoomNameChange}
+                                    onBlur={handleRoomNameBlur}
+                                    onKeyDown={handleRoomNameKeyDown}
+                                    autoFocus
+                                />
+                            ) : (
+                                <span
+                                    className="room-name-text editable"
+                                    onClick={() => setIsEditing(true)}
+                                    title="Click to edit room name"
+                                    style={{cursor: 'pointer'}}
+                                >
+                                    {editableRoomName}
+                                </span>
+                            )
+                        ) : (
+                            <span className="room-name-text">{roomName}</span>
+                        )}
+                    </div>
+                </div>
                 <div className="header-right">
-                    <button
-                        className="profile-button"
-                        aria-label="Profile"
-                        onClick={togglePopup}
-                    >
-                    </button>
+                    {roomCode && (
+                        <div className="room-code-container" onClick={handleCopyRoomCode} title="Click to copy room code">
+                            <span className="room-code-label">Room code:</span>
+                            <span className="room-code-value">{roomCode}</span>
+                            {copyFeedback && <span className="room-code-feedback">{copyFeedback}</span>}
+                        </div>
+                    )}
+                    <div className="profile-icon" onClick={togglePopup}>
+                        <MinidenticonImg username={useAuth().user.email}></MinidenticonImg>
+                    </div>
                 </div>
                 {isPopupVisible && (
                     <div className="profile-popup">

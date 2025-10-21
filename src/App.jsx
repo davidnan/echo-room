@@ -47,12 +47,8 @@ function RoomPage() {
 
     return (
         <>
-            <Header />
-            {/*<ProfileHeader></ProfileHeader>*/}
+            <Header isRoom={false} roomName={""}/>
             <div className="room-page-container">
-                <div className="header">
-                    <h2>Echo room</h2>
-                </div>
                 <div className="content">
                     <p>Enter a room or create one</p>
                     <p>to listen to your favorite music with your friends</p>
