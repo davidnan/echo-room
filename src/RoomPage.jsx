@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useState, useRef} from 'react';
 import useWebSocket, {ReadyState} from "react-use-websocket";
 import {useNavigate, useParams} from "react-router-dom";
 import Header from "./util/Header.jsx";
@@ -6,6 +6,10 @@ import {useAuth} from "./auth/AuthContext.jsx";
 import {getAuth} from "firebase/auth";
 import config from "./config/serverConfig.js"
 import YouTubeAudioPlayer from "./YoutubeVideoPlayer.jsx";
+import UserList from "./UserList.jsx";
+import SongList from "./SongList.jsx";
+import MediaControls from './MediaControls.jsx';
+import AddSongInput from './AddSongInput.jsx';
 
 
 const RoomPage = () => {
@@ -16,6 +20,7 @@ const RoomPage = () => {
     const [songs, setSongs] = useState([""]);
     const [roomName, setRoomName] = useState("");
     const [videoId, setVideoId] = useState('GBIIQ0kP15E');  // Initial video ID
+    const playerRef = useRef(null);
 
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
@@ -81,9 +86,47 @@ const RoomPage = () => {
         })
     }, []);
 
+    const handleAddSong = (url) => {
+        getAuth().currentUser.getIdToken().then( accessToken => {
+            sendMessage(JSON.stringify({type: "add_song", url: url, accessToken: accessToken }));
+        })
+    }
+
+    const handlePlay = () => {
+        playerRef.current?.playVideo();
+    }
+
+    const handlePause = () => {
+        playerRef.current?.pauseVideo();
+    }
+
+    const handleSkip = () => {
+        getAuth().currentUser.getIdToken().then( accessToken => {
+            sendMessage(JSON.stringify({type: "get_next_song", accessToken: accessToken }));
+        })
+    }
+
     const onPlayerEnd = () => {
         getAuth().currentUser.getIdToken().then( accessToken => {
             sendMessage(JSON.stringify({type: "get_next_song", accessToken: accessToken }));
+        })
+    }
+
+    const handleRemoveSong = (songUid) => {
+        getAuth().currentUser.getIdToken().then( accessToken => {
+            sendMessage(JSON.stringify({type: "remove_song", songUid: songUid, accessToken: accessToken }));
+        })
+    }
+
+    const handleReorderSongs = (fromIndex, toIndex) => {
+        getAuth().currentUser.getIdToken().then( accessToken => {
+            sendMessage(JSON.stringify({type: "reorder_songs", fromIndex: fromIndex, toIndex: toIndex, accessToken: accessToken }));
+        })
+    }
+
+    const handleKickUser = (userEmail) => {
+        getAuth().currentUser.getIdToken().then( accessToken => {
+            sendMessage(JSON.stringify({type: "kick_user", userEmail: userEmail, accessToken: accessToken }));
         })
     }
 
@@ -96,23 +139,37 @@ const RoomPage = () => {
                 onRoomNameChange={handleRoomNameChange}
                 roomCode={params.roomCode}
             />
-            <div>
-                <h2>users: {JSON.stringify(users)}</h2>
-                <h2>songs: {JSON.stringify(songs)}</h2>
+            <div className="room-page-content">
+                {isRoomOwner && (
+                    <>
+                        <YouTubeAudioPlayer videoId={videoId} onPlayerEnd={onPlayerEnd} ref={playerRef}/>
+                        <MediaControls
+                            onPlay={handlePlay}
+                            onPause={handlePause}
+                            onSkip={handleSkip}
+                        />
+                    </>
+                )}
+
+                <AddSongInput
+                    onAddSong={handleAddSong}
+                    disabled={readyState !== ReadyState.OPEN}
+                />
+
+                <UserList
+                    users={users}
+                    onKickUser={handleKickUser}
+                    canKick={isRoomOwner}
+                    currentUserEmail={currentUserEmail}
+                />
+                <SongList
+                    songs={songs}
+                    onRemoveSong={handleRemoveSong}
+                    onReorderSongs={handleReorderSongs}
+                    canManage={isRoomOwner}
+                />
             </div>
-            {isRoomOwner && (
-                <div>
-                    <button
-                        onClick={handleClickSendMessage}
-                        disabled={readyState !== ReadyState.OPEN}
-                    >
-                        Click Me to send 'this url: https://www.youtube.com/watch?v=utpXlVnUEUE'
-                    </button>
-                    <ul>
-                        <YouTubeAudioPlayer videoId={videoId} onPlayerEnd={onPlayerEnd}/>
-                    </ul>
-                </div>
-            )}        </>
+        </>
     )
 };
 
