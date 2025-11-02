@@ -6,12 +6,12 @@ import {getAuth} from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAY2-ZvEYJE3v3bM4FkmcrBBaSRq05cja0",
-  authDomain: "echoroom-a7c85.firebaseapp.com",
-  projectId: "echoroom-a7c85",
-  storageBucket: "echoroom-a7c85.firebasestorage.app",
-  messagingSenderId: "491733528095",
-  appId: "1:491733528095:web:e0be2051a977b1cba06f2a"
+  apiKey: "AIzaSyCoEN4T9i6NwjAvTTbIiVc0MGlnqkGyG7g",
+  authDomain: "echo-room-auth.firebaseapp.com",
+  projectId: "echo-room-auth",
+  storageBucket: "echo-room-auth.firebasestorage.app",
+  messagingSenderId: "820188746229",
+  appId: "1:820188746229:web:121daedd7df7a8a6fd10bc"
 };
 
 // Initialize Firebase

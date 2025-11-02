@@ -1,0 +1,13 @@
+.room-page-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 100px 2rem 2rem;
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+    .room-page-content {
+        padding: 90px 1rem 1rem;
+    }
+}
+
