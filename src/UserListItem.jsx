@@ -2,7 +2,7 @@ import React from 'react';
 import { MinidenticonImg } from './profile/MinidenticonImg.jsx';
 import './UserListItem.css';
 
-const UserListItem = ({ name, email, permissions, canKick, onKick }) => {
+const UserListItem = ({ name, email, uuid, permissions, canKick, onKick }) => {
     // Check if the user is an owner by checking the rightmost bit
     const isOwner = (permissions & 1) === 1;
 
@@ -24,7 +24,7 @@ const UserListItem = ({ name, email, permissions, canKick, onKick }) => {
                     className="kick-button"
                     onClick={(e) => {
                         e.stopPropagation();
-                        onKick(email);
+                        onKick(uuid);
                     }}
                     title="Kick user"
                 >

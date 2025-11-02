@@ -1,0 +1,145 @@
+.all-rooms-container {
+    background: rgba(33, 37, 41, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 16px;
+    max-width: 1200px;
+    width: 90%;
+    margin: 20px auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    min-height: 500px;
+}
+
+.all-rooms-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.all-rooms-content h1 {
+    color: #fff;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.loading-text,
+.error-text,
+.no-rooms-text {
+    color: #fff;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.error-text {
+    color: #ff6b6b;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    padding: 10px;
+}
+
+.room-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.room-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(90, 169, 230, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(90, 169, 230, 0.2);
+}
+
+.room-card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.room-name {
+    color: #fff;
+    font-size: 1.3rem;
+    margin: 0;
+    word-wrap: break-word;
+}
+
+.room-card-body {
+    flex: 1;
+}
+
+.room-code {
+    color: #ccc;
+    font-size: 0.95rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.room-code-label {
+    font-weight: 600;
+    color: #aaa;
+}
+
+.room-code-value {
+    font-family: 'Courier New', monospace;
+    color: #5aa9e6;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.room-card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.join-room-button,
+.delete-room-button {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.join-room-button {
+    background: linear-gradient(135deg, #5aa9e6 0%, #7f96ff 100%);
+    color: white;
+}
+
+.join-room-button:hover {
+    background: linear-gradient(135deg, #4a99d6 0%, #6f86ef 100%);
+    transform: scale(1.02);
+}
+
+.delete-room-button {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.delete-room-button:hover {
+    background: rgba(255, 107, 107, 0.3);
+    border-color: #ff6b6b;
+}
+
+.delete-room-button:active {
+    transform: scale(0.98);
+}
+

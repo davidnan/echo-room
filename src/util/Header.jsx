@@ -14,10 +14,15 @@ const Header = ({roomName, isRoom, isRoomOwner, onRoomNameChange, roomCode}) => 
     const [copyFeedback, setCopyFeedback] = useState('');
     const popupRef = useRef(null);
     const navigate = useNavigate();
+    const { user, userData } = useAuth();
 
     const goToProfile = () => {
 
         navigate("/profile");
+    };
+
+    const goToAllRooms = () => {
+        navigate("/all-rooms");
     };
 
     const HandleClick = () => {
@@ -114,6 +119,11 @@ const Header = ({roomName, isRoom, isRoomOwner, onRoomNameChange, roomCode}) => 
                     </div>
                 </div>
                 <div className="header-right">
+                    {!isRoom && userData && userData.permissions === 1 && (
+                        <button className="all-rooms-button" onClick={goToAllRooms}>
+                            All Rooms
+                        </button>
+                    )}
                     {roomCode && (
                         <div className="room-code-container" onClick={handleCopyRoomCode} title="Click to copy room code">
                             <span className="room-code-label">Room code:</span>
@@ -140,7 +150,6 @@ const Header = ({roomName, isRoom, isRoomOwner, onRoomNameChange, roomCode}) => 
                         </ul>
                     </div>)}
             </div>
-
         </header>
     );
 };

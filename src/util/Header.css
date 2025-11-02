@@ -259,3 +259,37 @@
     font-size: 0.95rem;
   }
 }
+
+.all-rooms-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2rem 1rem 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.all-rooms-button {
+  background: linear-gradient(135deg, #5aa9e6 0%, #7f96ff 100%);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(90, 169, 230, 0.2);
+}
+
+.all-rooms-button:hover {
+  background: linear-gradient(135deg, #4a99d6 0%, #6f86ef 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(90, 169, 230, 0.3);
+}
+
+.all-rooms-button:active {
+  transform: translateY(0);
+}

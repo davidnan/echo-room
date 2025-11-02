@@ -21,6 +21,7 @@ const RoomPage = () => {
     const [roomName, setRoomName] = useState("");
     const [videoId, setVideoId] = useState('GBIIQ0kP15E');  // Initial video ID
     const playerRef = useRef(null);
+    const isReorderingRef = useRef(false);
 
 
     const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
@@ -50,7 +51,10 @@ const RoomPage = () => {
                 setVideoId(messageJson.songUid);
                 break;
             case "songs":
-                setSongs(messageJson.songs);
+                // Only update songs if we're not currently reordering
+                if (!isReorderingRef.current) {
+                    setSongs(messageJson.songs);
+                }
                 break;
             case "users":
                 setUsers(messageJson.users);
@@ -119,14 +123,36 @@ const RoomPage = () => {
     }
 
     const handleReorderSongs = (fromIndex, toIndex) => {
+        // Set flag to prevent incoming updates from overwriting our optimistic update
+        isReorderingRef.current = true;
+
+        // Create a copy of the songs array
+        const reorderedSongs = Array.from(songs);
+        // Remove the song from the original position
+        const [movedSong] = reorderedSongs.splice(fromIndex, 1);
+        // Insert it at the new position
+        reorderedSongs.splice(toIndex, 0, movedSong);
+
+        // Update local state immediately for responsive UI
+        setSongs(reorderedSongs);
+
         getAuth().currentUser.getIdToken().then( accessToken => {
-            sendMessage(JSON.stringify({type: "reorder_songs", fromIndex: fromIndex, toIndex: toIndex, accessToken: accessToken }));
+            sendMessage(JSON.stringify({
+                type: "reorder_songs",
+                songs: reorderedSongs,
+                accessToken: accessToken
+            }));
+
+            // Clear the flag after a short delay to allow server response
+            setTimeout(() => {
+                isReorderingRef.current = false;
+            }, 500);
         })
     }
 
-    const handleKickUser = (userEmail) => {
+    const handleKickUser = (userUuid) => {
         getAuth().currentUser.getIdToken().then( accessToken => {
-            sendMessage(JSON.stringify({type: "kick_user", userEmail: userEmail, accessToken: accessToken }));
+            sendMessage(JSON.stringify({type: "kick_user", userUuid: userUuid, accessToken: accessToken }));
         })
     }
 

@@ -13,6 +13,7 @@ const UserList = ({ users, onKickUser, canKick, currentUserEmail }) => {
                             key={user.email || index}
                             name={user.name}
                             email={user.email}
+                            uuid={user.uid}
                             permissions={user.permissions || 0}
                             canKick={canKick && user.email !== currentUserEmail}
                             onKick={onKickUser}

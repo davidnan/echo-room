@@ -7,6 +7,7 @@ import RoomPage from "./RoomPage.jsx";
 import {useAuth} from "./auth/AuthContext.jsx";
 import GuestRoute from "./auth/GuestRoute.jsx";
 import Profile from "./profile/Profile.jsx";
+import AllRooms from "./AllRooms.jsx";
 
 const MainRouter = () => {
     const {user, loading} = useAuth();
@@ -19,6 +20,11 @@ const MainRouter = () => {
 
             <Route path="/profile" element={<ProtectedRoute >
                 <Profile />
+            </ProtectedRoute>}>
+            </Route>
+
+            <Route path="/all-rooms" element={<ProtectedRoute >
+                <AllRooms />
             </ProtectedRoute>}>
             </Route>
 
